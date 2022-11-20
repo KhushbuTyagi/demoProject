@@ -16,6 +16,7 @@ export default function TaskItem({ task, searchComponent, getSelectedId, doneTas
   });
 
   const updateTask = () => {
+    console.log('child update')
       doneTask({...task, taskStatus: task.taskStatus === 'ACTIVE' ? 'COMPLETED' : 'ACTIVE'});
   }
 
@@ -47,7 +48,7 @@ export default function TaskItem({ task, searchComponent, getSelectedId, doneTas
   return (
     <div className={containerClasses} tabIndex="0">
       <div className="cell">
-        <IconButton color={task.taskStatus === 'COMPLETED' ? 'success': 'secondary'} aria-label="delete" onClick={updateTask} className={classNames('btn--icon', 'task-item__button', {
+        <IconButton data-testid={task.taskStatus === 'COMPLETED' ? 'completed': 'active-btn'}  color={task.taskStatus === 'COMPLETED' ? 'success': 'secondary'} aria-label="delete" onClick={updateTask} className={classNames('btn--icon', 'task-item__button', {
             active: task.completed,
             hide: editing,
           })} >

@@ -2,10 +2,10 @@ import React, { useEffect, useCallback, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TaskSearch from "./task-search-component/TaskSearch";
 import "./Tasks.css";
-import axios from "axios";
 import debounce from "@mui/utils/debounce";
 import TaskItem from "./task-list-component/TaskList";
 import Snackbar from "@mui/material/Snackbar";
+import { getTaskList, removeTask, addTask, upgradeTask } from "../service/TaskService";
 
 export default function Tasks() {
   const navigate = useNavigate();
@@ -23,10 +23,10 @@ export default function Tasks() {
     selectedId.current = task;
   };
   const saveTask = async (taskName) => {
+    console.log('name', taskName);
     if (taskName.length > 0) {
       try {
-        await axios.post(
-          "http://localhost:3001/api/saveTask",
+        await addTask(
           { taskTitle: taskName, taskStatus: "ACTIVE", operation: "sql" }
         );
         getTasks();
@@ -39,8 +39,7 @@ export default function Tasks() {
   const updateTask = async (taskName) => {
     if (taskName.length > 0) {
       try {
-        await axios.put(
-          "http://localhost:3001/api/saveTask",
+        await upgradeTask(
           {
             taskTitle: taskName,
             operation: "sql",
@@ -57,9 +56,7 @@ export default function Tasks() {
 
   const doneTask = async (task) => {
     try {
-      await axios.put(
-        "http://localhost:3001/api/saveTask",
-        {
+      await upgradeTask({
           taskTitle: task.taskTitle,
           operation: "sql",
           id: task.id,
@@ -74,9 +71,7 @@ export default function Tasks() {
 
   const deleteTask = async (task) => {
     try {
-      await axios.delete(
-        `http://localhost:3001/api/deleteTask/${task.id}`
-      );
+      await removeTask(task.id)
       getTasks();
     } catch (ex) {
       showToast();
@@ -102,10 +97,7 @@ export default function Tasks() {
 
   const getTasks = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3001/api/tasks"
-      );
-      console.log(res);
+      const res = await getTaskList();
       setTaskList(res.data);
     } catch (ex) {
       showToast();
@@ -128,6 +120,7 @@ export default function Tasks() {
       <ul className="task-filters">
         <li>
           <a
+            data-testid="view all"
             href="javascript:void(0)"
             onClick={() => navigate("/")}
             className={!searchParams.get("filter") ? "active" : ""}
@@ -137,6 +130,7 @@ export default function Tasks() {
         </li>
         <li>
           <a
+          data-testid="active"
             href="javascript:void(0)"
             onClick={() => navigate("/?filter=active")}
             className={searchParams.get("filter") === "active" ? "active" : ""}
@@ -146,6 +140,7 @@ export default function Tasks() {
         </li>
         <li>
           <a
+            data-testid="completed"
             href="javascript:void(0)"
             onClick={() => navigate("/?filter=completed")}
             className={
@@ -158,6 +153,7 @@ export default function Tasks() {
       </ul>
       {filteredList.map((task) => (
         <TaskItem
+          key={task.id}
           deleteTask={deleteTask}
           doneTask={doneTask}
           getSelectedId={setSelectedId}

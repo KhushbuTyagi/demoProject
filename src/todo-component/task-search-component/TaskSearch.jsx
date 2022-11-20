@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 export default function TaskSearch({ searchHandlder, defaultValue, resetField }) {
   const handleEnterKey = event => {
     if(event.keyCode === 13) {
+      console.log('value',event.target.value);
       searchHandlder(event.target.value);
       event.target.value = '';
       if(resetField) {
@@ -13,7 +14,9 @@ export default function TaskSearch({ searchHandlder, defaultValue, resetField })
   }
 
     return (
+      <span >
         <TextField
+        inputProps = {{ 'data-testid': "search-text-box"}}
         id="filled-required"
         variant="standard"
         fullWidth 
@@ -22,5 +25,6 @@ export default function TaskSearch({ searchHandlder, defaultValue, resetField })
         onKeyUp={handleEnterKey}
         defaultValue={defaultValue}
       />
+      </span>
     );
 }
