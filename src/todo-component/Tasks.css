@@ -3,35 +3,43 @@
   width: 100%;
   max-width: 810px;
 }
+
 .main .MuiInput-input {
   height: 61px;
   font-size: 2rem;
 }
+
 .task-filters {
   padding-left: 1px;
   font-size: 1rem;
   line-height: 24px;
   list-style-type: none;
 }
+
 .task-filters li {
     float: left;
 }
+
 .task-filters li:not(:first-child) {
     margin-left: 12px;
 }
+
 .task-filters li:not(:first-child):before {
     padding-right: 12px;
     content: "/";
     font-weight: 300;
 }
+
 .task-filters a {
     color: #999;
     text-decoration: none;
 }
+
 .task-filters a.active {
     color: #222;
     font-weight: bold;
 }
+
 .task-item {
     clear: both;
     display: -ms-flexbox;

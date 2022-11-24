@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-
 export default function TaskSearch({ searchHandlder, defaultValue, resetField }) {
   const handleEnterKey = event => {
     if(event.keyCode === 13) {
@@ -12,11 +11,10 @@ export default function TaskSearch({ searchHandlder, defaultValue, resetField })
       }
     }
   }
-
     return (
       <span >
         <TextField
-        inputProps = {{ 'data-testid': "search-text-box"}}
+        inputProps = {{ 'data-testId': "search-text-box"}}
         id="filled-required"
         variant="standard"
         fullWidth 

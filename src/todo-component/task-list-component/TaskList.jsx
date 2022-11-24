@@ -5,8 +5,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField';
-
 export default function TaskItem({ task, searchComponent, getSelectedId, doneTask, deleteTask }) {
   const [editing, setEditing] = useState(false);
   const [selectedTask, setSelectedTask] = useState();
@@ -14,12 +12,10 @@ export default function TaskItem({ task, searchComponent, getSelectedId, doneTas
     'task-item--completed': task.completed,
     'task-item--editing': editing,
   });
-
   const updateTask = () => {
-    console.log('child update')
+    console.log('child update task')
       doneTask({...task, taskStatus: task.taskStatus === 'ACTIVE' ? 'COMPLETED' : 'ACTIVE'});
   }
-
   const renderTitle = task => {
     return (
       <div className="task-item__title" tabIndex="0">
@@ -32,19 +28,9 @@ export default function TaskItem({ task, searchComponent, getSelectedId, doneTas
   }
   const renderTitleInput = task => {
     return (
-    //   <TextField
-    //   id="filled-required"
-    //   variant="standard"
-    //   fullWidth 
-    //   hiddenLabel
-    //   value={selectedTask?.taskTitle}
-    //   placeholder={task.taskTitle}
-    //   onChange={event => setSelectedTask(prev => ({...prev, taskTitle: event.target.value}))}
-    //   />
     React.cloneElement(searchComponent, {resetField})
     );
   }
-  
   return (
     <div className={containerClasses} tabIndex="0">
       <div className="cell">
@@ -55,11 +41,9 @@ export default function TaskItem({ task, searchComponent, getSelectedId, doneTas
           <DoneIcon />
         </IconButton>
        </div>
-
       <div className="cell">
         {editing ? renderTitleInput(task) : renderTitle(task)}
       </div>
-
       <div className="cell">
       {!editing && <IconButton onClick={() => {setEditing(true); getSelectedId(task)}} aria-label="delete" className={classNames('btn--icon', 'task-item__button', {
             hide: editing,
